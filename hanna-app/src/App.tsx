@@ -19,7 +19,6 @@ class App extends React.Component{
     super.setState(state);
   }*/
   render() {
-    console.log(this.state)  
     return (
     <Router>
       <Header />

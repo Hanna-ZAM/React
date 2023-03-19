@@ -10,7 +10,6 @@ type MyProps = {
   index?:string
 };
 type MyState = {
-  searchValue:string,
   data?:Array<ProductType>
 };
 
@@ -21,7 +20,6 @@ class CardList extends React.Component<MyProps, MyState>{
     this.state = { ...this.state, data: JSON.parse(this.props.data as string)};
   }
   render(){
-    console.log(this.state.data)
     return (
       <div
       className="cardList">

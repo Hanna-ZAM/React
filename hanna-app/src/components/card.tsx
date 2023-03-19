@@ -22,10 +22,11 @@ type MyState= {
 class Card extends React.Component<MyProps, MyState>{
   constructor(props:MyProps) {
     super(props);
-    this.state = { ...productsList.products[+(this.props.index as string)]};
+    this.state = window.localStorage.getItem(`card${this.props.index}`)?
+                 JSON.parse(window.localStorage.getItem(`card${this.props.index}`)as string):
+                 { ...productsList.products[+(this.props.index as string)]};
   }
   render(){
-    const n=+(this.props.index as string)
     return (
       <div className="card" >
         <img className="card-img"
@@ -75,8 +76,10 @@ class Card extends React.Component<MyProps, MyState>{
       likes: this.state.likes -1
     }));
   }
-  
-   }
+}
+componentDidUpdate(){
+  window.localStorage.setItem(`card${this.props.index}`, JSON.stringify(this.state))
+}
 }
 
 
