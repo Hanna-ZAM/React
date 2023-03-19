@@ -1,7 +1,7 @@
-import React, { EventHandler } from "react";
+import React from "react";
 import './cardList.css';
 import productsList from "../product";
-import { ProductType } from "../product";
+
 
 type MyProps = {
   data?: string,
@@ -64,22 +64,22 @@ class Card extends React.Component<MyProps, MyState>{
       checked: (!state.checked)
     }));
   }
- like(e: React.SyntheticEvent<EventTarget>){
-  if ( this.state.likes ===productsList.products[+(this.props.index as string)].likes){
-    (e.target as HTMLImageElement).src="../src/assets/fullLike-svgrepo-com.svg";
-    this.setState(state => ({
-      likes: this.state.likes +1
-    }));
-  } else {
-    (e.target as HTMLImageElement).src="../src/assets/like-svgrepo-com.svg";
-    this.setState(state => ({
-      likes: this.state.likes -1
-    }));
+  like(e: React.SyntheticEvent<EventTarget>){
+   if ( this.state.likes ===productsList.products[+(this.props.index as string)].likes){
+     (e.target as HTMLImageElement).src="../src/assets/fullLike-svgrepo-com.svg";
+     this.setState(state => ({
+       likes: this.state.likes +1
+     }));
+   } else {
+     (e.target as HTMLImageElement).src="../src/assets/like-svgrepo-com.svg";
+     this.setState(state => ({
+       likes: this.state.likes -1
+     }));
+   }
+ }
+  componentDidUpdate(){
+    window.localStorage.setItem(`card${this.props.index}`, JSON.stringify(this.state))
   }
-}
-componentDidUpdate(){
-  window.localStorage.setItem(`card${this.props.index}`, JSON.stringify(this.state))
-}
 }
 
 

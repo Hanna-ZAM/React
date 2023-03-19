@@ -2,9 +2,8 @@ import React from "react";
 import Card from "./card";
 
 import './cardList.css'
-import productsList, { ProductType } from "../product";
+import  { ProductType } from "../product";
 type MyProps = {
-  // using `interface` is also ok
   data?: string,
   key?:string,
   index?:string

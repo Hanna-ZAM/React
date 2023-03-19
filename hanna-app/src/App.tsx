@@ -8,16 +8,6 @@ import { ProductType } from "product";
 import productsList from "../src/product";
 
 class App extends React.Component{
- /* constructor() {
-    super(props);
-    this.state = JSON.parse(window.localStorage.getItem('state') as string) || {
-      searchValue: ''
-    }
-  }
-  setState(state:stateType) {
-    window.localStorage.setItem('state', JSON.stringify(state));
-    super.setState(state);
-  }*/
   render() {
     return (
     <Router>
@@ -27,7 +17,5 @@ class App extends React.Component{
     )
   }
 }
-
-
 
 export default App
