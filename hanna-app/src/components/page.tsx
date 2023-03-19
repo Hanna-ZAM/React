@@ -10,7 +10,9 @@ import {
 
 class Page extends React.Component{
   render(){
+    console.log(this.props)  
     return (
+      
       <main>
         <Routes>
           <Route path="/" element={<Main />}/>
