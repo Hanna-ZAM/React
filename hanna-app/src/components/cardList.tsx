@@ -1,34 +1,36 @@
-import React from "react";
-import Card from "./card";
+import React from 'react';
+import Card from './card';
 
-import './cardList.css'
-import  { ProductType } from "../product";
+import './cardList.css';
+import { ProductType } from '../product';
 type MyProps = {
-  data?: string,
-  key?:string,
-  index?:string
+  data?: string;
+  key?: string;
+  index?: string;
 };
 type MyState = {
-  data?:Array<ProductType>
+  data?: Array<ProductType>;
 };
 
-
-class CardList extends React.Component<MyProps, MyState>{
-  constructor(props:MyProps) {
+class CardList extends React.Component<MyProps, MyState> {
+  constructor(props: MyProps) {
     super(props);
-    this.state = { ...this.state, data: JSON.parse(this.props.data as string)};
+    this.state = { ...this.state, data: JSON.parse(this.props.data as string) };
   }
-  render(){
+  render() {
     return (
-      <div
-      className="cardList">
-     {JSON.parse(this.props.data as string).map((el:ProductType, index:number)=>{
-    return <Card key={JSON.parse(this.props.data as string)[index].id as string} index={index.toString()}/>})}
+      <div className="cardList">
+        {JSON.parse(this.props.data as string).map((el: ProductType, index: number) => {
+          return (
+            <Card
+              key={JSON.parse(this.props.data as string)[index].id as string}
+              index={index.toString()}
+            />
+          );
+        })}
       </div>
     );
   }
 }
 
-
-
-export default CardList
+export default CardList;

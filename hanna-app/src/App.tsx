@@ -1,21 +1,18 @@
-import React from "react";
-import { useState } from 'react'
-import Page  from './components/page'
-import './App.css'
-import {BrowserRouter as Router} from 'react-router-dom';
-import Header from './components/header'
-import { ProductType } from "product";
-import productsList from "../src/product";
+import React from 'react';
+import Page from './components/page';
+import './App.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './components/header';
 
-class App extends React.Component{
+class App extends React.Component {
   render() {
     return (
-    <Router>
-      <Header />
-      <Page />
-    </Router>
-    )
+      <Router>
+        <Header />
+        <Page />
+      </Router>
+    );
   }
 }
 
-export default App
+export default App;

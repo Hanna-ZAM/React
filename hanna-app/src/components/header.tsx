@@ -1,13 +1,13 @@
-import React from "react";
-import '../App.css'
+import React from 'react';
+import '../App.css';
 import { Link } from 'react-router-dom';
 
 class Header extends React.Component {
-  render () {
+  render() {
     return (
-      <header className='header'>
+      <header className="header">
         <nav>
-          <ul className='header-list'>
+          <ul className="header-list">
             <li>
               <Link to="/">Main</Link>
             </li>
@@ -20,8 +20,8 @@ class Header extends React.Component {
           </ul>
         </nav>
       </header>
-    )
+    );
   }
 }
 
-export default Header
+export default Header;

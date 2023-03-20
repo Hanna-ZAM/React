@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react';
 
-export  class About extends React.Component {
+export class About extends React.Component {
   render(): React.ReactNode {
-    return (
-      <h2>About</h2>
-    )
+    return <h2>About</h2>;
   }
 }

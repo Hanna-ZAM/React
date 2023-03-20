@@ -6,7 +6,7 @@ export type ProductType = {
   views: number;
   checked: boolean;
   category: string;
-  image:string ;
+  image: string;
 };
 type ProductsListType = {
   products: Array<ProductType>;
@@ -105,7 +105,6 @@ const productsList: ProductsListType = {
       category: 'city',
       image: 'https://source.unsplash.com/1600x900/?bridge',
     },
-   
   ],
   total: 9,
 };

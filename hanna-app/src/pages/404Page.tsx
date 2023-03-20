@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react';
 
-export  class Page404 extends React.Component {
+export class Page404 extends React.Component {
   render(): React.ReactNode {
-    return (
-      <h2>Page is not found</h2>
-    )
+    return <h2>Page is not found</h2>;
   }
 }
