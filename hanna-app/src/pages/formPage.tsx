@@ -1,8 +1,6 @@
-import { check } from 'prettier';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import './form.css';
 import { Form } from '../components/form/form';
-
 
 export class FormPage extends React.Component {
   render(): React.ReactNode {
