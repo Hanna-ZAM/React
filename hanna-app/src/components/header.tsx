@@ -15,6 +15,9 @@ class Header extends React.Component {
               <Link to="/about">About us</Link>
             </li>
             <li>
+              <Link to="/form">Form</Link>
+            </li>
+            <li>
               <Link to="/page404">404</Link>
             </li>
           </ul>
