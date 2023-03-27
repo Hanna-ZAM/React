@@ -120,6 +120,16 @@ export class Form extends React.Component<MyProps> {
           }
       if (!Object.values(valid).includes(false)) {
       console.log(newCard);
+      this.title.current.value=''
+      this.author.current.value=''
+      this.date.current.value=''
+      this.category.current.value=''
+      this.isAgree.current.checked=false
+      this.file.current.value=''
+      this.gender='male'
+      this.male.current.checked=false
+      this.female.current.checked=false
+
      }
   
     }
