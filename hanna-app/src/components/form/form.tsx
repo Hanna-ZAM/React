@@ -6,6 +6,43 @@ type MyProps = {
   key?: string;
   index?: string;
 };
+type CardType = {
+  title: string;
+  author: string;
+  date: string;
+  isAgree: boolean;
+  gender: string;
+  category: string;
+  file: string;
+}
+
+function validation(card:CardType) {
+  let result:boolean=true;
+  if((!card.title)||(card.title.length<3)) { 
+    console.log('wrong title');
+    return result=false
+  }
+  if((!card.author)||
+     (card.author.length<3)||
+     (card.author[0].toLocaleLowerCase()===card.author[0])) { 
+      console.log('wrong author');
+      return result=false
+    }
+  if (!(card.date.split('-').length===3)||
+      ((new Date(Date.now()))<(new Date(card.date)))) {
+        console.log('wrong date');
+        return result=false
+      }
+  if ((!card.isAgree)) { 
+    console.log(card.isAgree);
+    return result=false
+  }
+  if (!(card.file)) { 
+    console.log('wrong file');
+    return result=false
+  }
+         return result
+}
 
 export class Form extends React.Component<MyProps> {
   constructor(props: MyProps) {
@@ -36,16 +73,21 @@ export class Form extends React.Component<MyProps> {
 
   handleSubmit(event: React.SyntheticEvent<EventTarget>) {
     event.preventDefault();
-    const newCard = {
+
+    const newCard:CardType = {
       title: this.title.current.value,
       author: this.author.current.value,
       date: this.date.current.value,
-      isAgree: this.date.current.value,
+      isAgree: this.isAgree.current.checked,
       gender: this.gender,
       category: this.category.current.value,
       file: this.file.current.value,
     };
-    console.log(newCard);
+        if (validation(newCard)) {
+      console.log(newCard);
+     } else {
+      console.log('wrong validation');
+     }
   }
 
   render() {
