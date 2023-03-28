@@ -12,7 +12,18 @@ type MyProps = {
 export class Form extends React.Component<MyProps> {
   constructor(props: MyProps) {
     super(props);
-    this.state = { formItem: [] };
+    this.state = {
+      formItem: [],
+      valid: {
+        title: true,
+        author: true,
+        date: true,
+        isAgree: true,
+        gender: true,
+        category: true,
+        file: true,
+      },
+    };
 
     this.title = React.createRef();
     this.author = React.createRef();
@@ -53,6 +64,7 @@ export class Form extends React.Component<MyProps> {
     };
 
     const valid = validation(newCard);
+    this.setState({ ...this.state, valid: valid });
 
     for (const key in valid) {
       if (key !== 'gender' && key !== 'isAgree') {
@@ -64,7 +76,8 @@ export class Form extends React.Component<MyProps> {
       }
     }
     if (!Object.values(valid).includes(false)) {
-      this.setState({ formItem: [...this.state.formItem, newCard] });
+      this.setState({ ...this.state, formItem: [...this.state.formItem, newCard], valid: valid });
+
       /*newCard = {
         title: '',
         author: '',
@@ -100,6 +113,7 @@ export class Form extends React.Component<MyProps> {
               ref={this.title}
               placeholder="Title"
             />
+            {!this.state.valid.title && <p className="error">Error Title</p>}
           </label>
           <br />
           <label className="labelStyle">
@@ -112,11 +126,13 @@ export class Form extends React.Component<MyProps> {
               ref={this.author}
               placeholder="Author"
             />
+            {!this.state.valid.author && <p className="error">Error Author</p>}
           </label>
           <br />
           <label className="labelStyle">
             Enter date of create foto
             <input className="inputStyle" defaultValue="" name="date" type="date" ref={this.date} />
+            {!this.state.valid.date && <p className="error">Error Date</p>}
           </label>
           <br />
           <label className="labelStyle">
@@ -126,6 +142,7 @@ export class Form extends React.Component<MyProps> {
               <option value="city">city</option>
               <option value="nature">nature</option>
             </select>
+            {!this.state.valid.category && <p className="error">Error Category</p>}
           </label>
           <br />
           <label className="labelStyle">
@@ -137,9 +154,11 @@ export class Form extends React.Component<MyProps> {
               ref={this.isAgree}
               checked={this.isAgree.checked}
             />
+            {!this.state.valid.isAgree && <p className="error">Check it!</p>}
           </label>
           <label className="labelStyle">
             <input className="inputStyle" name="file" type="file" ref={this.file} />
+            {!this.state.valid.file && <p className="error">Error File</p>}
           </label>
           <br />
           <label className="labelStyle" onChange={this.handleRadioChange}>
@@ -147,6 +166,7 @@ export class Form extends React.Component<MyProps> {
             <input type="radio" name="male" ref={this.male} />
             female
             <input type="radio" name="female" ref={this.female} />
+            {!this.state.valid.gender && <p className="error">Check it!</p>}
           </label>
           <input className="buttonStyle" type="submit" value="Submit" />
         </form>
