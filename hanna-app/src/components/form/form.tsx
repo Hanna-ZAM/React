@@ -1,35 +1,19 @@
-import CardList from 'components/cardList';
 import React from 'react';
-import CardListForm from './cardListForm';
 import './form.css';
 import { validation, CardType } from './function';
+import { CardListForm } from './cardListForm';
 
 type MyProps = {
   value?: string;
   key?: string;
   index?: string;
 };
-export let formItem:Array<CardType>=[{
-  title: 'fff',
-  author: 'ggg',
-  date: '2023',
-  isAgree: true,
-  gender: 'male',
-  category: 'people',
-  file: 'ffff236',
-}, {
-  title: 'faaaf',
-  author: 'ggg',
-  date: '2023',
-  isAgree: true,
-  gender: 'female',
-  category: 'people',
-  file: 'ffff236',
-}];
 
 export class Form extends React.Component<MyProps> {
   constructor(props: MyProps) {
     super(props);
+    this.state = { formItem: [] };
+
     this.title = React.createRef();
     this.author = React.createRef();
     this.date = React.createRef();
@@ -57,7 +41,7 @@ export class Form extends React.Component<MyProps> {
   handleSubmit(event: React.SyntheticEvent<EventTarget>) {
     event.preventDefault();
 
-    let newCard: CardType = {
+    const newCard: CardType = {
       title: this.title.current.value,
       author: this.author.current.value,
       date: this.date.current.value,
@@ -80,17 +64,16 @@ export class Form extends React.Component<MyProps> {
       }
     }
     if (!Object.values(valid).includes(false)) {
-      formItem.push(newCard);
-      console.log(formItem)
-      newCard={
+      this.setState({ formItem: [...this.state.formItem, newCard] });
+      /*newCard = {
         title: '',
-        author:'',
+        author: '',
         date: '',
         isAgree: false,
         gender: '',
         category: '',
         file: '',
-      };
+      };*/
       this.title.current.value = '';
       this.author.current.value = '';
       this.date.current.value = '';
@@ -101,77 +84,74 @@ export class Form extends React.Component<MyProps> {
       this.male.current.checked = false;
       this.female.current.checked = false;
     }
-    
   }
   render() {
+    const f: Array<CardType> = this.state.formItem;
     return (
-      <form className="formStyle" onSubmit={this.handleSubmit}>
-        <label className="labelStyle">
-          Enter title for your foto
-          <input
-            className="inputStyle"
-            defaultValue=""
-            name="title"
-            type="text"
-            ref={this.title}
-            placeholder="Title"
-          />
-        </label>
-        <br />
-        <label className="labelStyle">
-          Enter author&apos;s name for your foto
-          <input
-            className="inputStyle"
-            defaultValue=""
-            name="author"
-            type="text"
-            ref={this.author}
-            placeholder="Author"
-          />
-        </label>
-        <br />
-        <label className="labelStyle">
-          Enter date of create foto
-          <input
-            className="inputStyle"
-            defaultValue={Date.now()}
-            name="date"
-            type="date"
-            ref={this.date}
-          />
-        </label>
-        <br />
-        <label className="labelStyle">
-          Categoty of your foto:
-          <select className="inputStyle" name="category" defaultValue="" ref={this.category}>
-            <option value="people">people</option>
-            <option value="city">city</option>
-            <option value="nature">nature</option>
-          </select>
-        </label>
-        <br />
-        <label className="labelStyle">
-          I agree with using this foto
-          <input
-            className=""
-            name="isAgree"
-            type="checkbox"
-            ref={this.isAgree}
-            checked={this.isAgree.checked}
-          />
-        </label>
-        <label className="labelStyle">
-          <input className="inputStyle" name="file" type="file" ref={this.file} />
-        </label>
-        <br />
-        <label className="labelStyle" onChange={this.handleRadioChange}>
-          male
-          <input type="radio" name="male" ref={this.male} />
-          female
-          <input type="radio" name="female" ref={this.female} />
-        </label>
-        <input className="buttonStyle" type="submit" value="Submit" />
-      </form>
+      <>
+        <form className="formStyle" onSubmit={this.handleSubmit}>
+          <label className="labelStyle">
+            Enter title for your foto
+            <input
+              className="inputStyle"
+              defaultValue=""
+              name="title"
+              type="text"
+              ref={this.title}
+              placeholder="Title"
+            />
+          </label>
+          <br />
+          <label className="labelStyle">
+            Enter author&apos;s name for your foto
+            <input
+              className="inputStyle"
+              defaultValue=""
+              name="author"
+              type="text"
+              ref={this.author}
+              placeholder="Author"
+            />
+          </label>
+          <br />
+          <label className="labelStyle">
+            Enter date of create foto
+            <input className="inputStyle" defaultValue="" name="date" type="date" ref={this.date} />
+          </label>
+          <br />
+          <label className="labelStyle">
+            Categoty of your foto:
+            <select className="inputStyle" name="category" defaultValue="" ref={this.category}>
+              <option value="people">people</option>
+              <option value="city">city</option>
+              <option value="nature">nature</option>
+            </select>
+          </label>
+          <br />
+          <label className="labelStyle">
+            I agree with using this foto
+            <input
+              className=""
+              name="isAgree"
+              type="checkbox"
+              ref={this.isAgree}
+              checked={this.isAgree.checked}
+            />
+          </label>
+          <label className="labelStyle">
+            <input className="inputStyle" name="file" type="file" ref={this.file} />
+          </label>
+          <br />
+          <label className="labelStyle" onChange={this.handleRadioChange}>
+            male
+            <input type="radio" name="male" ref={this.male} />
+            female
+            <input type="radio" name="female" ref={this.female} />
+          </label>
+          <input className="buttonStyle" type="submit" value="Submit" />
+        </form>
+        <CardListForm data={JSON.stringify(f)} />
+      </>
     );
   }
 }

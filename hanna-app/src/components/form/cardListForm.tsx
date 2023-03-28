@@ -2,7 +2,7 @@ import React from 'react';
 import CardForm from './cardForm';
 
 import './form.css';
-import { CardType } from '../function'
+import { CardType } from '../function';
 
 type MyProps = {
   data?: string;
@@ -11,19 +11,21 @@ type MyState = {
   formItems?: Array<CardType>;
 };
 
-class CardListForm extends React.Component<MyProps, MyState> {
+export class CardListForm extends React.Component<MyProps, MyState> {
   constructor(props: MyProps) {
     super(props);
-    this.state = { ...this.state, formItems: JSON.parse(this.props.data as string)};
+    this.state = { formItems: JSON.parse(this.props.data as string) };
   }
   render() {
+    if (!JSON.parse(this.props.data as string).length)
+      return <div className="cardListForm">CardList is empty</div>;
     return (
-      <div className="cardList">
-        {this.state.formItems.map((el: CardType, index: number) => {
+      <div className="cardListForm">
+        {JSON.parse(this.props.data as string).map((el: CardType, index: number) => {
           return (
             <CardForm
-              data= {JSON.stringify(el) as string}
-              key={el.date+index as string}
+              data={JSON.stringify(el) as string}
+              key={(el.date + index) as string}
               index={index.toString()}
             />
           );
@@ -31,6 +33,4 @@ class CardListForm extends React.Component<MyProps, MyState> {
       </div>
     );
   }
-  }
-
-export default CardListForm;
+}

@@ -1,6 +1,4 @@
-import React from 'react';
 import './form.css';
-
 
 export type CardType = {
   title: string;
@@ -62,4 +60,3 @@ export function validation(card: CardType) {
   }
   return result;
 }
-
