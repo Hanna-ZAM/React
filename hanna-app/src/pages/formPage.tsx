@@ -1,6 +1,7 @@
 import React from 'react';
 import './form.css';
-import { Form } from '../components/form/form';
+import { Form, formItem } from '../components/form/form';
+import CardListForm from '../components/form/cardListForm';
 
 export class FormPage extends React.Component {
   render(): React.ReactNode {
@@ -8,6 +9,7 @@ export class FormPage extends React.Component {
       <>
         <h2>Form</h2>
         <Form />
+        <CardListForm data={JSON.stringify(formItem)}/>
       </>
     );
   }

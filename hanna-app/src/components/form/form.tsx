@@ -1,70 +1,31 @@
+import CardList from 'components/cardList';
 import React from 'react';
+import CardListForm from './cardListForm';
 import './form.css';
+import { validation, CardType } from './function';
 
 type MyProps = {
   value?: string;
   key?: string;
   index?: string;
 };
-type CardType = {
-  title: string;
-  author: string;
-  date: string;
-  isAgree: boolean;
-  gender: string;
-  genderCheck: boolean;
-  category: string;
-  file: string;
-}
-type ResultType = {
-  title: boolean;
-  author: boolean;
-  date: boolean;
-  isAgree: boolean;
-  gender: boolean;
-  category: boolean;
-  file: boolean;
-}
-
-function validation(card:CardType) {
-  let result:ResultType={
-    title: true,
-    author: true,
-    date: true,
-    isAgree: true,
-    gender: true,
-    category: true,
-    file: true,
-  };
-  if((!card.title)||(card.title.length<3)) { 
-    console.log('wrong title');
-     result.title=false
-  }
-  if((!card.author)||
-     (card.author.length<3)||
-     (card.author[0].toLocaleLowerCase()===card.author[0])) { 
-      console.log('wrong author');
-       result.author=false
-    }
-  if (!(card.date.split('-').length===3)||
-      ((new Date(Date.now()))<(new Date(card.date)))) {
-        console.log('wrong date');
-         result.date=false
-      }
-  if ((!card.isAgree)) { 
-    console.log(card.isAgree);
-     result.isAgree=false
-  }
-  if (!(card.genderCheck)) { 
-    console.log('wrong file');
-    result.gender=false
-  }
-  if (!(card.file)) { 
-    console.log('wrong file');
-     result.file=false
-  }
-         return result
-}
+export let formItem:Array<CardType>=[{
+  title: 'fff',
+  author: 'ggg',
+  date: '2023',
+  isAgree: true,
+  gender: 'male',
+  category: 'people',
+  file: 'ffff236',
+}, {
+  title: 'faaaf',
+  author: 'ggg',
+  date: '2023',
+  isAgree: true,
+  gender: 'female',
+  category: 'people',
+  file: 'ffff236',
+}];
 
 export class Form extends React.Component<MyProps> {
   constructor(props: MyProps) {
@@ -93,48 +54,56 @@ export class Form extends React.Component<MyProps> {
     }
   }
 
-  handleSubmit(event: React.SyntheticEvent<EventTarget>, ) {
+  handleSubmit(event: React.SyntheticEvent<EventTarget>) {
     event.preventDefault();
 
-    const newCard:CardType = {
+    let newCard: CardType = {
       title: this.title.current.value,
       author: this.author.current.value,
       date: this.date.current.value,
       isAgree: this.isAgree.current.checked,
       gender: this.gender,
-      genderCheck:this.female.current.checked||this.male.current.checked,
+      genderCheck: this.female.current.checked || this.male.current.checked,
       category: this.category.current.value,
       file: this.file.current.value,
     };
 
-    const valid=validation(newCard);
+    const valid = validation(newCard);
 
-    for (let key in valid){
-        if ((key!=='gender')&&(key!=='isAgree')){
-          if ((valid[key]===false)) {
-                this[key].current.className='wrong'
-             } else  {
-               this[key].current.className='inputStyle'
-             }
-            }
-          }
-      if (!Object.values(valid).includes(false)) {
-      console.log(newCard);
-      this.title.current.value=''
-      this.author.current.value=''
-      this.date.current.value=''
-      this.category.current.value=''
-      this.isAgree.current.checked=false
-      this.file.current.value=''
-      this.gender='male'
-      this.male.current.checked=false
-      this.female.current.checked=false
-
-     }
-  
+    for (const key in valid) {
+      if (key !== 'gender' && key !== 'isAgree') {
+        if (valid[key] === false) {
+          this[key].current.className = 'wrong';
+        } else {
+          this[key].current.className = 'inputStyle';
+        }
+      }
     }
+    if (!Object.values(valid).includes(false)) {
+      formItem.push(newCard);
+      console.log(formItem)
+      newCard={
+        title: '',
+        author:'',
+        date: '',
+        isAgree: false,
+        gender: '',
+        category: '',
+        file: '',
+      };
+      this.title.current.value = '';
+      this.author.current.value = '';
+      this.date.current.value = '';
+      this.category.current.value = '';
+      this.isAgree.current.checked = false;
+      this.file.current.value = '';
+      this.gender = 'male';
+      this.male.current.checked = false;
+      this.female.current.checked = false;
+    }
+    
+  }
   render() {
-   
     return (
       <form className="formStyle" onSubmit={this.handleSubmit}>
         <label className="labelStyle">
@@ -174,7 +143,7 @@ export class Form extends React.Component<MyProps> {
         <br />
         <label className="labelStyle">
           Categoty of your foto:
-          <select className='inputStyle' name="category" defaultValue="" ref={this.category}>
+          <select className="inputStyle" name="category" defaultValue="" ref={this.category}>
             <option value="people">people</option>
             <option value="city">city</option>
             <option value="nature">nature</option>
@@ -183,7 +152,13 @@ export class Form extends React.Component<MyProps> {
         <br />
         <label className="labelStyle">
           I agree with using this foto
-          <input className='' name="isAgree" type="checkbox" ref={this.isAgree} checked={this.isAgree.checked} />
+          <input
+            className=""
+            name="isAgree"
+            type="checkbox"
+            ref={this.isAgree}
+            checked={this.isAgree.checked}
+          />
         </label>
         <label className="labelStyle">
           <input className="inputStyle" name="file" type="file" ref={this.file} />
