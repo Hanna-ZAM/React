@@ -1,0 +1,92 @@
+* {
+margin-block-end: 0;
+margin-block-start: 0;
+}
+
+.formStyle{
+
+  width:70%;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: auto;
+  margin-top: 50px;
+}
+.labelStyle{
+  width: 55%;
+  margin: auto;
+}
+.inputStyle{
+  width:100%;
+  margin: auto;
+}
+.buttonStyle{
+  width:55%;
+  height: 50px;
+  margin: auto;
+  color: white;
+  background-color:rgba(14, 103, 103, 1);
+  font-size: large;
+}
+
+.wrong{
+  background-color: rgba(255, 0, 0, 0.2);
+  width:100%;
+  margin: auto;
+}
+.wrongCheck{
+  color: rgba(255, 0, 0, 0.2);
+  width:100%;
+  margin: auto;
+}
+
+.cardListForm{
+  width: 100%;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card-male {
+  margin-top: 25px;
+  background-color: rgba(0, 51, 255, 0.1);
+  width:70%;
+  border: 1px solid  rgba(0, 51, 255, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card-female {
+  margin-top: 25px;
+  background-color: rgba(255, 0, 183, 0.1);
+  width: 70%;
+  border: 1px solid  rgba(255, 0, 183, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.error {
+  color: brown;
+  font-weight: 800;
+}
+
+.createdMessage{
+  width: 50%;
+  height: 100px;
+  top:25%;
+  left: 25%;
+  position: absolute;
+  z-index: 1;
+  background-color: aliceblue;
+  color: black;
+  font-size: large;
+  text-align: center;
+  padding-top: 55px;
+}
