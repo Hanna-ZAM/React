@@ -14,6 +14,7 @@ export class Form extends React.Component<MyProps> {
     super(props);
     this.state = {
       formItem: [],
+      created: false,
       valid: {
         title: true,
         author: true,
@@ -76,7 +77,12 @@ export class Form extends React.Component<MyProps> {
       }
     }
     if (!Object.values(valid).includes(false)) {
-      this.setState({ ...this.state, formItem: [...this.state.formItem, newCard], valid: valid });
+      this.setState({
+        ...this.state,
+        formItem: [...this.state.formItem, newCard],
+        valid: valid,
+        created: true,
+      });
 
       /*newCard = {
         title: '',
@@ -87,15 +93,18 @@ export class Form extends React.Component<MyProps> {
         category: '',
         file: '',
       };*/
-      this.title.current.value = '';
-      this.author.current.value = '';
-      this.date.current.value = '';
-      this.category.current.value = '';
-      this.isAgree.current.checked = false;
-      this.file.current.value = '';
-      this.gender = 'male';
-      this.male.current.checked = false;
-      this.female.current.checked = false;
+      setTimeout(() => {
+        this.title.current.value = '';
+        this.author.current.value = '';
+        this.date.current.value = '';
+        this.category.current.value = '';
+        this.isAgree.current.checked = false;
+        this.file.current.value = '';
+        this.gender = 'male';
+        this.male.current.checked = false;
+        this.female.current.checked = false;
+        this.setState({ ...this.state, created: false });
+      }, 1000);
     }
   }
   render() {
@@ -170,6 +179,7 @@ export class Form extends React.Component<MyProps> {
           </label>
           <input className="buttonStyle" type="submit" value="Submit" />
         </form>
+        {this.state.created && <p className="createdMessage">Card is created</p>}
         <CardListForm data={JSON.stringify(f)} />
       </>
     );
