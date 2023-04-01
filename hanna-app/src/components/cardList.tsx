@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from './card';
 
 import './cardList.css';
@@ -12,18 +12,13 @@ type MyState = {
   data?: Array<ProductType>;
 };
 
-class CardList extends React.Component<MyProps, MyState> {
-  constructor(props: MyProps) {
-    super(props);
-    this.state = { ...this.state, data: JSON.parse(this.props.data as string) };
-  }
-  render() {
+const CardList :FC<ChildProps>=(props: MyProps):ReactElement =>  {
     return (
       <div className="cardList">
-        {JSON.parse(this.props.data as string).map((el: ProductType, index: number) => {
+        {JSON.parse(props.data as string).map((el: ProductType, index: number) => {
           return (
             <Card
-              key={JSON.parse(this.props.data as string)[index].id as string}
+              key={JSON.parse(props.data as string)[index].id as string}
               index={index.toString()}
             />
           );
@@ -31,6 +26,6 @@ class CardList extends React.Component<MyProps, MyState> {
       </div>
     );
   }
-}
+
 
 export default CardList;

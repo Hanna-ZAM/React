@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './cardList.css';
 import productsList from '../product';
 
@@ -31,19 +31,19 @@ const Card:FC<ChildProps>=(props: MyProps):ReactElement => {
     (e.target as HTMLImageElement).src = state.checked
       ? './assets/img/star-svgrepo-com.svg'
       : './assets/img/fullStar-svgrepo-com.svg';
-    setState((state) => ({
+    getState((state) => ({...state, 
       checked: !state.checked,
     }));
   }
   const like=(e: React.SyntheticEvent<EventTarget>) =>{
     if (state.likes === productsList.products[+(props.index as string)].likes) {
       (e.target as HTMLImageElement).src = './assets/img/fullLike-svgrepo-com.svg';
-      setState(() => ({
+      getState((state) => ({...state, 
         likes: state.likes + 1,
       }));
     } else {
       (e.target as HTMLImageElement).src = './assets/img/like-svgrepo-com.svg';
-      setState(() => ({
+      getState((state) => ({...state, 
         likes: state.likes - 1,
       }));
     }
@@ -58,7 +58,7 @@ const Card:FC<ChildProps>=(props: MyProps):ReactElement => {
         <div className="card-likes">
           <img
             className="card-svg"
-            src="./assets/like-svgrepo-com.svg"
+            src="./assets/img/like-svgrepo-com.svg"
             alt="likes-img"
             onClick={like}
           ></img>
