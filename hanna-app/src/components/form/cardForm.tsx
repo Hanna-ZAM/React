@@ -28,8 +28,7 @@ const CardForm: FC<ChildProps> = (props: MyProps): ReactElement => {
       setClassGender('card-female');
     }
   }, [gender]);
-  
- 
+
   return (
     <div className={classGender}>
       <h3 className="card-text">
