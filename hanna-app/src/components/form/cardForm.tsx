@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './form.css';
 
 type MyProps = {
@@ -6,29 +6,41 @@ type MyProps = {
   key?: string;
   index?: string;
 };
-type MyState = {
+/*type MyState = {
   index?: number;
-};
+};*/
 
-class CardForm extends React.Component<MyProps, MyState> {
-  constructor(props: MyProps) {
-    super(props);
-    this.state = { ...JSON.parse(props.data), index: props.index };
-  }
-  render() {
-    const classGender = this.state.gender === 'male' ? 'card-male' : 'card-female';
-    return (
-      <div className={classGender}>
-        <h3 className="card-text">
-          {+this.state.index + 1}) Title: {this.state.title}
-        </h3>
-        <p className="card-text">File: {this.state.file}</p>
-        <p className="card-text">Author: {this.state.author}</p>
-        <p className="card-text">Category: {this.state.category}</p>
-        <p className="card-text">Create at: {this.state.date}</p>
-      </div>
-    );
-  }
-}
+const CardForm: FC<ChildProps> = (props: MyProps): ReactElement => {
+  const state = {
+    ...JSON.parse(props.data),
+    index: props.index,
+  };
+  const [classGender, setClassGender] = useState('');
+
+  const gender = useMemo(() => {
+    state.gender;
+    return state.gender;
+  }, []);
+  useEffect(() => {
+    if (gender === 'male') {
+      setClassGender('card-male');
+    } else {
+      setClassGender('card-female');
+    }
+  }, [gender]);
+  
+ 
+  return (
+    <div className={classGender}>
+      <h3 className="card-text">
+        {+state.index + 1} Title: {state.title}
+      </h3>
+      <p className="card-text">File: {state.file}</p>
+      <p className="card-text">Author: {state.author}</p>
+      <p className="card-text">Category: {state.category}</p>
+      <p className="card-text">Create at: {state.date}</p>
+    </div>
+  );
+};
 
 export default CardForm;

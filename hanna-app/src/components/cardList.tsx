@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from './card';
 
 import './cardList.css';
@@ -8,24 +8,23 @@ type MyProps = {
   key?: string;
   index?: string;
 };
-type MyState = {
+/*type MyState = {
   data?: Array<ProductType>;
+};*/
+
+const CardList: FC<ChildProps> = (props: MyProps): ReactElement => {
+  return (
+    <div className="cardList">
+      {JSON.parse(props.data as string).map((el: ProductType, index: number) => {
+        return (
+          <Card
+            key={JSON.parse(props.data as string)[index].id as string}
+            index={index.toString()}
+          />
+        );
+      })}
+    </div>
+  );
 };
-
-const CardList :FC<ChildProps>=(props: MyProps):ReactElement =>  {
-    return (
-      <div className="cardList">
-        {JSON.parse(props.data as string).map((el: ProductType, index: number) => {
-          return (
-            <Card
-              key={JSON.parse(props.data as string)[index].id as string}
-              index={index.toString()}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-
 
 export default CardList;

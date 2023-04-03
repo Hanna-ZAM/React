@@ -4,13 +4,13 @@ import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './components/header';
 
-const  App = () => {
-    return (
-      <Router>
-        <Header />
-        <Page />
-      </Router>
-    );
-  }
+const App = () => {
+  return (
+    <Router>
+      <Header />
+      <Page />
+    </Router>
+  );
+};
 
 export default App;

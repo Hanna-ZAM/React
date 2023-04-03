@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import './form.css';
 import { validation, CardType } from './function';
 import { CardListForm } from './cardListForm';
@@ -9,109 +9,124 @@ type MyProps = {
   index?: string;
 };
 
-export class Form extends React.Component<MyProps> {
-  constructor(props: MyProps) {
-    super(props);
-    this.state = {
-      formItem: [],
-      created: false,
-      valid: {
-        title: true,
-        author: true,
-        date: true,
-        isAgree: true,
-        gender: true,
-        category: true,
-        file: true,
-      },
-    };
+export const  Form : FC<ChildProps> = (props: MyProps): ReactElement =>{
+  const [state, setState] = useState({
+    formItem: [],
+    created: false,
+    valid: {
+      title: true,
+      author: true,
+      date: true,
+      isAgree: true,
+      gender: true,
+      category: true,
+      file: true,
+    }});
+    
 
-    this.title = React.createRef();
-    this.author = React.createRef();
-    this.date = React.createRef();
-    this.category = React.createRef();
-    this.isAgree = React.createRef();
-    this.file = React.createRef();
-    this.gender = 'male';
-    this.male = React.createRef();
-    this.female = React.createRef();
+    const title = useRef(null);
+    const author = useRef(null);
+    const date = useRef(null);
+    const category = useRef(null);
+    const isAgree = useRef(null);
+    const file = useRef(null);
+    let gender = 'male';
+    const male = useRef(null);
+    const female = useRef(null);
 
-    this.handleRadioChange = this.handleRadioChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
-  handleRadioChange() {
-    if (this.male.current.checked) {
-      this.gender = this.male.current.name;
-      this.female.current.checked = false;
-    } else if (this.female.current.checked) {
-      this.gender = this.female.current.name;
-      this.male.current.checked = false;
+  const handleRadioChange=() =>{
+    if (male.current.checked) {
+      gender = male.current.name;
+      female.current.checked = false;
+    } else if (female.current.checked) {
+      gender = female.current.name;
+      male.current.checked = false;
     }
+    console.log(title)
   }
 
-  handleSubmit(event: React.SyntheticEvent<EventTarget>) {
+  const handleSubmit=(event: React.SyntheticEvent<EventTarget>)=> {
     event.preventDefault();
+console.log(title)
+const newCard: CardType = {
+  title: title.current.value,
+  author: author.current.value,
+  date: date.current.value,
+  isAgree: isAgree.current.checked,
+  gender: gender,
+  genderCheck: female.current.checked || male.current.checked,
+  category: category.current.value,
+  file: file.current.value,
+};
 
-    const newCard: CardType = {
-      title: this.title.current.value,
-      author: this.author.current.value,
-      date: this.date.current.value,
-      isAgree: this.isAgree.current.checked,
-      gender: this.gender,
-      genderCheck: this.female.current.checked || this.male.current.checked,
-      category: this.category.current.value,
-      file: this.file.current.value,
-    };
+const valid = validation(newCard);
+setState({ ...state, valid: valid });
 
-    const valid = validation(newCard);
-    this.setState({ ...this.state, valid: valid });
-
-    for (const key in valid) {
-      if (key !== 'gender' && key !== 'isAgree') {
-        if (valid[key] === false) {
-          this[key].current.className = 'wrong';
-        } else {
-          this[key].current.className = 'inputStyle';
-        }
-      }
-    }
-    if (!Object.values(valid).includes(false)) {
-      this.setState({
-        ...this.state,
-        formItem: [...this.state.formItem, newCard],
-        valid: valid,
-        created: true,
-      });
-
-      /*newCard = {
-        title: '',
-        author: '',
-        date: '',
-        isAgree: false,
-        gender: '',
-        category: '',
-        file: '',
-      };*/
-      setTimeout(() => {
-        this.title.current.value = '';
-        this.author.current.value = '';
-        this.date.current.value = '';
-        this.category.current.value = '';
-        this.isAgree.current.checked = false;
-        this.file.current.value = '';
-        this.gender = 'male';
-        this.male.current.checked = false;
-        this.female.current.checked = false;
-        this.setState({ ...this.state, created: false });
-      }, 1000);
+for (const key in valid) {
+  if (valid[key] === false) {
+    console.log(valid[key])
+    switch (key.toString()){
+      case 'title':
+          title.current.className = 'wrong';
+          console.log(title.current.className)
+          break;
+      case 'author':
+        author.current.className = 'wrong';
+            break;
+      case 'date':
+        date.current.className = 'wrong';
+            break;    
+    } 
+  } else {
+      switch (key.toString()){
+        case 'title':
+            title.current.className = 'inputStyle';
+            console.log(title.current.className)
+            break;
+        case 'author':
+          author.current.className = 'inputStyle';
+              break;
+        case 'date':
+          date.current.className = 'inputStyle';
+              break;    
     }
   }
-  render() {
-    const f: Array<CardType> = this.state.formItem;
+    }
+
+if (!Object.values(valid).includes(false)) {
+  setState({
+    ...state,
+    formItem: [...state.formItem, newCard],
+    valid: valid,
+    created: true,
+  });
+  console.log(state)
+
+  setTimeout(() => {
+    title.current.value = '';
+    author.current.value = '';
+    date.current.value = '';
+    category.current.value = 'people';
+    isAgree.current.checked = false;
+    file.current.value = '';
+    gender = 'male';
+    male.current.checked = false;
+    female.current.checked = false;
+    setState({ 
+      ...state,
+      formItem: [...state.formItem, newCard],
+      valid: valid, 
+      created: false 
+    });
+  }, 1000);
+}
+  }
+
+    const f: Array<CardType> = state.formItem;
     return (
       <>
-        <form className="formStyle" onSubmit={this.handleSubmit}>
+        <form className="formStyle" onSubmit={handleSubmit}>
           <label className="labelStyle">
             Enter title for your foto
             <input
@@ -119,10 +134,10 @@ export class Form extends React.Component<MyProps> {
               defaultValue=""
               name="title"
               type="text"
-              ref={this.title}
+              ref={title}
               placeholder="Title"
             />
-            {!this.state.valid.title && <p className="error">Error Title</p>}
+            {!state.valid.title && <p className="error">Error Title</p>}
           </label>
           <br />
           <label className="labelStyle">
@@ -132,26 +147,26 @@ export class Form extends React.Component<MyProps> {
               defaultValue=""
               name="author"
               type="text"
-              ref={this.author}
+              ref={author}
               placeholder="Author"
             />
-            {!this.state.valid.author && <p className="error">Error Author</p>}
+            {!state.valid.author && <p className="error">Error Author</p>}
           </label>
           <br />
           <label className="labelStyle">
             Enter date of create foto
-            <input className="inputStyle" defaultValue="" name="date" type="date" ref={this.date} />
-            {!this.state.valid.date && <p className="error">Error Date</p>}
+            <input className="inputStyle" defaultValue="" name="date" type="date" ref={date} />
+            {!state.valid.date && <p className="error">Error Date</p>}
           </label>
           <br />
           <label className="labelStyle">
             Categoty of your foto:
-            <select className="inputStyle" name="category" defaultValue="" ref={this.category}>
+            <select className="inputStyle" name="category" defaultValue="" ref={category}>
               <option value="people">people</option>
               <option value="city">city</option>
               <option value="nature">nature</option>
             </select>
-            {!this.state.valid.category && <p className="error">Error Category</p>}
+            {!state.valid.category && <p className="error">Error Category</p>}
           </label>
           <br />
           <label className="labelStyle">
@@ -160,28 +175,32 @@ export class Form extends React.Component<MyProps> {
               className=""
               name="isAgree"
               type="checkbox"
-              ref={this.isAgree}
-              checked={this.isAgree.checked}
+              ref={isAgree}
+              checked={isAgree.checked}
             />
-            {!this.state.valid.isAgree && <p className="error">Check it!</p>}
+            {!state.valid.isAgree && <p className="error">Check it!</p>}
           </label>
           <label className="labelStyle">
-            <input className="inputStyle" name="file" type="file" ref={this.file} />
-            {!this.state.valid.file && <p className="error">Error File</p>}
+            <input className="inputStyle" 
+                   name="file" 
+                   type="file" 
+                   accept="image/png, image/gif, image/jpeg"
+                   ref={file} />
+            {!state.valid.file && <p className="error">Error File</p>}
           </label>
           <br />
-          <label className="labelStyle" onChange={this.handleRadioChange}>
+          <label className="labelStyle" onChange={handleRadioChange}>
             male
-            <input type="radio" name="male" ref={this.male} />
+            <input type="radio" name="male" ref={male} />
             female
-            <input type="radio" name="female" ref={this.female} />
-            {!this.state.valid.gender && <p className="error">Check it!</p>}
+            <input type="radio" name="female" ref={female} />
+            {!state.valid.gender && <p className="error">Check it!</p>}
           </label>
           <input className="buttonStyle" type="submit" value="Submit" />
         </form>
-        {this.state.created && <p className="createdMessage">Card is created</p>}
+        {state.created && <p className="createdMessage">Card is created</p>}
         <CardListForm data={JSON.stringify(f)} />
       </>
-    );
+    )
   }
-}
+
