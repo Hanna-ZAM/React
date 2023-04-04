@@ -36,12 +36,10 @@ export const Form: FC<ChildProps> = (): ReactElement => {
       gender = female.current.name;
       male.current.checked = false;
     }
-    console.log(title);
   };
 
   const handleSubmit = (event: React.SyntheticEvent<EventTarget>) => {
     event.preventDefault();
-    console.log(title);
     const newCard: CardType = {
       title: title.current.value,
       author: author.current.value,
@@ -50,7 +48,7 @@ export const Form: FC<ChildProps> = (): ReactElement => {
       gender: gender,
       genderCheck: female.current.checked || male.current.checked,
       category: category.current.value,
-      file: file.current.value,
+      file: URL.createObjectURL((file.current.files as FileList)[0]),
     };
 
     const valid = validation(newCard);
@@ -58,11 +56,9 @@ export const Form: FC<ChildProps> = (): ReactElement => {
 
     for (const key in valid) {
       if (valid[key] === false) {
-        console.log(valid[key]);
         switch (key.toString()) {
           case 'title':
             title.current.className = 'wrong';
-            console.log(title.current.className);
             break;
           case 'author':
             author.current.className = 'wrong';
@@ -75,7 +71,6 @@ export const Form: FC<ChildProps> = (): ReactElement => {
         switch (key.toString()) {
           case 'title':
             title.current.className = 'inputStyle';
-            console.log(title.current.className);
             break;
           case 'author':
             author.current.className = 'inputStyle';
@@ -94,7 +89,6 @@ export const Form: FC<ChildProps> = (): ReactElement => {
         valid: valid,
         created: true,
       });
-      console.log(state);
 
       setTimeout(() => {
         title.current.value = '';

@@ -34,7 +34,7 @@ const CardForm: FC<ChildProps> = (props: MyProps): ReactElement => {
       <h3 className="card-text">
         {+state.index + 1} Title: {state.title}
       </h3>
-      <p className="card-text">File: {state.file}</p>
+      <img className="card-image" src={state.file} alt="card-img"></img>
       <p className="card-text">Author: {state.author}</p>
       <p className="card-text">Category: {state.category}</p>
       <p className="card-text">Create at: {state.date}</p>

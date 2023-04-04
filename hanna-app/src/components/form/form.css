@@ -90,3 +90,9 @@ margin-block-start: 0;
   text-align: center;
   padding-top: 55px;
 }
+
+.card-image{
+  width: 35%;
+  object-fit: fill;
+  margin: 20px;
+}
