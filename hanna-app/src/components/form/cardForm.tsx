@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, /*useMemo,*/ useCallback } from 'react';
 import './form.css';
 
 type MyProps = {
@@ -17,17 +17,17 @@ const CardForm: FC<ChildProps> = (props: MyProps): ReactElement => {
   };
   const [classGender, setClassGender] = useState('');
 
-  const gender = useMemo(() => {
-    state.gender;
-    return state.gender;
-  }, []);
-  useEffect(() => {
-    if (gender === 'male') {
+  const changeClass = useCallback(() => {
+    if (state.gender === 'male') {
       setClassGender('card-male');
     } else {
       setClassGender('card-female');
     }
-  }, [gender]);
+  }, [state.gender]);
+
+  useEffect(() => {
+    changeClass();
+  }, [changeClass]);
 
   return (
     <div className={classGender}>
