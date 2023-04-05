@@ -1,119 +1,58 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './form.css';
-import { validation, CardType } from './function';
+import { CardType } from './function';
 import { CardListForm } from './cardListForm';
+import { useForm } from 'react-hook-form';
+
+export let f: Array<CardType> = [];
 
 export const Form: FC<ChildProps> = (): ReactElement => {
   const [state, setState] = useState({
     formItem: [],
     created: false,
-    valid: {
-      title: true,
-      author: true,
-      date: true,
-      isAgree: true,
-      gender: true,
-      category: true,
-      file: true,
-    },
   });
 
-  const title = useRef(null);
-  const author = useRef(null);
-  const date = useRef(null);
-  const category = useRef(null);
-  const isAgree = useRef(null);
-  const file = useRef(null);
-  let gender = 'male';
-  const male = useRef(null);
-  const female = useRef(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CardType>({
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
+    shouldFocusError: false,
+  });
 
-  const handleRadioChange = () => {
-    if (male.current.checked) {
-      gender = male.current.name;
-      female.current.checked = false;
-    } else if (female.current.checked) {
-      gender = female.current.name;
-      male.current.checked = false;
-    }
-  };
-
-  const handleSubmit = (event: React.SyntheticEvent<EventTarget>) => {
-    event.preventDefault();
-    const newCard: CardType = {
-      title: title.current.value,
-      author: author.current.value,
-      date: date.current.value,
-      isAgree: isAgree.current.checked,
-      gender: gender,
-      genderCheck: female.current.checked || male.current.checked,
-      category: category.current.value,
-      file: URL.createObjectURL((file.current.files as FileList)[0]),
+  const onSubmit = (data: CardType) => {
+    const newCard = {
+      title: data.title,
+      author: data.author,
+      date: data.date,
+      gender: data.gender,
+      isAgree: data.isAgree,
+      category: data.category,
+      file: URL.createObjectURL(data.file[0]),
     };
+    setState({
+      ...state,
+      formItem: [...state.formItem, newCard],
+      created: true,
+    });
 
-    const valid = validation(newCard);
-    setState({ ...state, valid: valid });
-
-    for (const key in valid) {
-      if (valid[key] === false) {
-        switch (key.toString()) {
-          case 'title':
-            title.current.className = 'wrong';
-            break;
-          case 'author':
-            author.current.className = 'wrong';
-            break;
-          case 'date':
-            date.current.className = 'wrong';
-            break;
-        }
-      } else {
-        switch (key.toString()) {
-          case 'title':
-            title.current.className = 'inputStyle';
-            break;
-          case 'author':
-            author.current.className = 'inputStyle';
-            break;
-          case 'date':
-            date.current.className = 'inputStyle';
-            break;
-        }
-      }
-    }
-
-    if (!Object.values(valid).includes(false)) {
+    reset();
+    setTimeout(() => {
       setState({
         ...state,
         formItem: [...state.formItem, newCard],
-        valid: valid,
-        created: true,
+        created: false,
       });
-
-      setTimeout(() => {
-        title.current.value = '';
-        author.current.value = '';
-        date.current.value = '';
-        category.current.value = 'people';
-        isAgree.current.checked = false;
-        file.current.value = '';
-        gender = 'male';
-        male.current.checked = false;
-        female.current.checked = false;
-        setState({
-          ...state,
-          formItem: [...state.formItem, newCard],
-          valid: valid,
-          created: false,
-        });
-      }, 1000);
-    }
+    }, 1000);
   };
 
-  const f: Array<CardType> = state.formItem;
+  f = state.formItem;
   return (
     <>
-      <form className="formStyle" onSubmit={handleSubmit}>
+      <form className="formStyle" onSubmit={handleSubmit(onSubmit)}>
         <label className="labelStyle">
           Enter title for your foto
           <input
@@ -121,10 +60,16 @@ export const Form: FC<ChildProps> = (): ReactElement => {
             defaultValue=""
             name="title"
             type="text"
-            ref={title}
+            {...register('title', {
+              required: true,
+              minLength: {
+                value: 3,
+                message: 'You need input more 3 letters',
+              },
+            })}
             placeholder="Title"
           />
-          {!state.valid.title && <p className="error">Error Title</p>}
+          {errors.title && <p className="error">Error Title</p>}
         </label>
         <br />
         <label className="labelStyle">
@@ -134,26 +79,47 @@ export const Form: FC<ChildProps> = (): ReactElement => {
             defaultValue=""
             name="author"
             type="text"
-            ref={author}
+            {...register('author', {
+              required: true,
+              minLength: {
+                value: 3,
+                message: 'You need input more 3 letters',
+              },
+            })}
             placeholder="Author"
           />
-          {!state.valid.author && <p className="error">Error Author</p>}
+          {errors.author && <p className="error">Error Author</p>}
         </label>
         <br />
         <label className="labelStyle">
           Enter date of create foto
-          <input className="inputStyle" defaultValue="" name="date" type="date" ref={date} />
-          {!state.valid.date && <p className="error">Error Date</p>}
+          <input
+            className="inputStyle"
+            defaultValue=""
+            name="date"
+            type="date"
+            {...register('date', {
+              required: true,
+              valueAsDate: true,
+            })}
+          />
+          {errors.date && <p className="error">Error Date</p>}
         </label>
         <br />
         <label className="labelStyle">
           Categoty of your foto:
-          <select className="inputStyle" name="category" defaultValue="" ref={category}>
+          <select
+            className="inputStyle"
+            name="category"
+            defaultValue=""
+            {...register('category', {
+              required: true,
+            })}
+          >
             <option value="people">people</option>
             <option value="city">city</option>
             <option value="nature">nature</option>
           </select>
-          {!state.valid.category && <p className="error">Error Category</p>}
         </label>
         <br />
         <label className="labelStyle">
@@ -162,10 +128,11 @@ export const Form: FC<ChildProps> = (): ReactElement => {
             className=""
             name="isAgree"
             type="checkbox"
-            ref={isAgree}
-            checked={isAgree.checked}
+            {...register('isAgree', {
+              required: true,
+            })}
           />
-          {!state.valid.isAgree && <p className="error">Check it!</p>}
+          {errors.isAgree && <p className="error">Check it!</p>}
         </label>
         <label className="labelStyle">
           <input
@@ -173,17 +140,33 @@ export const Form: FC<ChildProps> = (): ReactElement => {
             name="file"
             type="file"
             accept="image/png, image/gif, image/jpeg"
-            ref={file}
+            {...register('file', {
+              required: true,
+            })}
           />
-          {!state.valid.file && <p className="error">Error File</p>}
+          {errors.file && <p className="error">Error File</p>}
         </label>
         <br />
-        <label className="labelStyle" onChange={handleRadioChange}>
+        <label className="labelStyle">
           male
-          <input type="radio" name="male" ref={male} />
+          <input
+            type="radio"
+            value="male"
+            name="male"
+            {...register('gender', {
+              required: true,
+            })}
+          />
           female
-          <input type="radio" name="female" ref={female} />
-          {!state.valid.gender && <p className="error">Check it!</p>}
+          <input
+            type="radio"
+            name="female"
+            value="female"
+            {...register('gender', {
+              required: true,
+            })}
+          />
+          {errors.gender && <p className="error">Check it!</p>}
         </label>
         <input className="buttonStyle" type="submit" value="Submit" />
       </form>

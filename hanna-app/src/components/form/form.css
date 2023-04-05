@@ -47,16 +47,17 @@ margin-block-start: 0;
   width: 100%;
   margin-top: 25px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .card-male {
-  margin-top: 25px;
+  margin: 25px;
   background-color: rgba(0, 51, 255, 0.1);
-  width:70%;
+  width:25%;
+  height: 200px;
   border: 1px solid  rgba(0, 51, 255, 1);
   display: flex;
   flex-direction: column;
@@ -64,9 +65,10 @@ margin-block-start: 0;
 }
 
 .card-female {
-  margin-top: 25px;
+  margin: 25px;
   background-color: rgba(255, 0, 183, 0.1);
-  width: 70%;
+  width: 25%;
+  height: 200px;
   border: 1px solid  rgba(255, 0, 183, 1);
   display: flex;
   flex-direction: column;
@@ -92,7 +94,8 @@ margin-block-start: 0;
 }
 
 .card-image{
-  width: 35%;
+ /* width: 35%;*/
+  height: 50px;
   object-fit: fill;
   margin: 20px;
 }
