@@ -1,14 +1,8 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement } from 'react';
 
 const BarStyle = { width: '20rem', background: '#F0F0F0', border: 'none', padding: '0.5rem' };
 
 const SearchBar: FC<ChildProps> = ({ searchValue, setSearchValue }): ReactElement => {
-  if (window.localStorage.getItem('searchValue')) {
-    setSearchValue(window.localStorage.getItem('searchValue') as string);
-  }
-  useEffect(() => {
-    window.localStorage.setItem('searchValue', searchValue);
-  }, []);
   return (
     <div
       style={{

@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './cardList.css';
 import Modal from './modal';
 import axios from 'axios';
 
 type MyProps = {
-  data?: string;
+  data?: {
+    secret: string;
+    id: string;
+    server: string;
+  };
   key?: string;
   index?: string;
 };
@@ -18,7 +22,7 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
   const [state, setState] = useState('');
   const [modal, setModal] = useState(false);
 
-  const getState = async () => {
+  const getState = useCallback(async () => {
     const url =
       'https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=fd018fb8b522dc83b621f765fd3951a3&photo_id=' +
       cardId +
@@ -29,7 +33,7 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
     const result =
       'https://farm' + farm + '.staticflickr.com/' + server + '/' + cardId + '_' + secret + '.jpg';
     setState({
-      title: resp.title._content ? resp.title._content : 'no title',
+      title: resp.title ? resp.title._content : 'no title',
       author: resp.owner.realname ? resp.owner.realname : resp.owner.username,
       image: result,
       views: resp.views,
@@ -37,21 +41,12 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
       date: resp.dates.taken,
       link: resp.urls.url[0]._content,
     });
-  };
+  }, [cardId, farm, secret, server]);
 
   useEffect(() => {
     getState();
-  }, []);
+  }, [getState]);
 
-  /*const check = (e: React.SyntheticEvent<EventTarget>) => {
-    (e.target as HTMLImageElement).src = state.checked
-      ? './assets/img/star-svgrepo-com.svg'
-      : './assets/img/fullStar-svgrepo-com.svg';
-    setState((state) => ({ ...state, checked: !state.checked }));
-  };*/
-  const getDescription = () => {
-    setModal(true);
-  };
   return (
     <>
       {
@@ -59,7 +54,7 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
           <img className="card-img" src={state.image}></img>
           <h3 className="card-text">{state.title}</h3>
           <p className="card-text">Author: {state.author}</p>
-          <button className="card-likes small-button" onClick={getDescription}>
+          <button className="card-likes small-button" onClick={() => setModal(true)}>
             More...
           </button>
         </div>

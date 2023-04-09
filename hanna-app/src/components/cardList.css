@@ -23,7 +23,7 @@ margin-block-start: 0;
   justify-content: space-between;
   align-items: flex-start;
   font-size: 16px;
-
+  overflow: hidden;
 }
 .card-img{
   width: 20vw;
@@ -140,4 +140,18 @@ margin-block-start: 0;
   width: 25px;
   top:0;
   right: 0;
+}
+
+.preloader{
+  width: 50%;
+  padding: 25px;
+  position: absolute;
+  z-index: 3;
+  top:30%;
+  left:23%;
+  background-color: #0e6565;
+  color: aliceblue;
+  font-size: medium;
+  font-weight: 700;
+
 }
