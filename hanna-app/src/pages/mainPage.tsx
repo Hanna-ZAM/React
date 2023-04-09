@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import CardList from '../components/cardList';
 import SearchBar from '../components/search';
 
-export const Main = () => {
+export const Main: FC<ChildProps> = (): ReactElement => {
   const [searchMetod, setSearchMetod] = useState(false);
   const [text, setText] = useState('');
   const [count, setCount] = useState(0);
