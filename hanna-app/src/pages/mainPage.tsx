@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CardList from '../components/cardList';
 import SearchBar from '../components/search';
 
-import productsList from '../product';
+export const Main = () => {
+  const [searchMetod, setSearchMetod] = useState(false);
+  const [text, setText] = useState('');
+  useEffect(() => {
+    if (text) {
+      setSearchMetod(true);
+    } else {
+      setSearchMetod(false);
+    }
+  }, [text]);
 
-export class Main extends React.Component {
-  render(): React.ReactNode {
-    return (
-      <>
-        <h2>Main</h2>
-        <SearchBar />
-        <CardList data={JSON.stringify(productsList.products)} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <h2>Main</h2>
+      <SearchBar searchValue={text} setSearchValue={setText} />
+      <CardList data={{ searchMetod: searchMetod, text: text }} />
+    </>
+  );
+};

@@ -29,12 +29,13 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
     const result =
       'https://farm' + farm + '.staticflickr.com/' + server + '/' + cardId + '_' + secret + '.jpg';
     setState({
-      title: resp.title._content,
+      title: resp.title._content ? resp.title._content : 'no title',
       author: resp.owner.realname ? resp.owner.realname : resp.owner.username,
       image: result,
       views: resp.views,
       description: resp.description._content ? resp.description._content : 'no description',
       date: resp.dates.taken,
+      link: resp.urls.url[0]._content,
     });
   };
 
@@ -42,12 +43,12 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
     getState();
   }, []);
 
-  const check = (e: React.SyntheticEvent<EventTarget>) => {
+  /*const check = (e: React.SyntheticEvent<EventTarget>) => {
     (e.target as HTMLImageElement).src = state.checked
       ? './assets/img/star-svgrepo-com.svg'
       : './assets/img/fullStar-svgrepo-com.svg';
     setState((state) => ({ ...state, checked: !state.checked }));
-  };
+  };*/
   const getDescription = () => {
     setModal(true);
   };
@@ -58,26 +59,9 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
           <img className="card-img" src={state.image}></img>
           <h3 className="card-text">{state.title}</h3>
           <p className="card-text">Author: {state.author}</p>
-          <span className="card-line"></span>
-          <div className="card-likes">
-            <span className="view-container">
-              <img
-                className="card-svg"
-                src="./assets/img/view-svgrepo-com.svg"
-                alt="views-img"
-              ></img>
-              <p className="card-likes-count">{state.views}</p>
-              <img
-                className="card-svg"
-                src="./assets/img/star-svgrepo-com.svg"
-                alt="cheked-img"
-                onClick={check}
-              ></img>
-            </span>
-            <button className="small-button" onClick={getDescription}>
-              More...
-            </button>
-          </div>
+          <button className="card-likes small-button" onClick={getDescription}>
+            More...
+          </button>
         </div>
       }
       <Modal data={{ ...state }} visible={modal} setVisible={setModal} />

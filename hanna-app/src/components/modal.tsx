@@ -21,11 +21,13 @@ const Modal: FC<ChildProps> = ({ data, visible, setVisible }): ReactElement => {
               onClick={() => setVisible(false)}
             ></img>
             <img className="card-img" src={data.image}></img>
-            <h3 className="card-text">{data.title}</h3>
-            <p className="card-text">Author: {'  ' + data.author}</p>
+            <h3 className="card-text modal-text">{data.title}</h3>
+            <p className="card-text modal-text">Author: {'  ' + data.author}</p>
             <span className="card-line"></span>
-            <p className="card-text">Description: {'  ' + data.description}</p>
-            <p className="card-text">Created: {'  ' + data.date}</p>
+            <p className="card-text modal-text">Description: {'  ' + data.description}</p>
+            <a className="card-text modal-text" href={data.link}>
+              {data.link}
+            </a>
             <br />
             <div className="card-likes">
               <span className="view-container">
@@ -35,15 +37,8 @@ const Modal: FC<ChildProps> = ({ data, visible, setVisible }): ReactElement => {
                   alt="views-img"
                 ></img>
                 <p className="card-likes-count">{'  ' + data.views}</p>
-                <img
-                  className="card-svg"
-                  src="./assets/img/star-svgrepo-com.svg"
-                  alt="cheked-img"
-                ></img>
               </span>
-              <button className="small-button" disabled>
-                More...
-              </button>
+              <p className="card-text modal-text">Created: {'  ' + data.date}</p>
             </div>
           </div>
         }
