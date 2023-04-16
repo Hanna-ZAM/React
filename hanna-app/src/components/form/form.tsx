@@ -3,6 +3,8 @@ import './form.css';
 import { CardType } from './function';
 import { CardListForm } from './cardListForm';
 import { useForm } from 'react-hook-form';
+import { formSlicer } from '../../store/reducers/cardFormSlicer';
+import { useAppDispatch } from '../../hooks/redux';
 
 export let f: Array<CardType> = [];
 
@@ -27,17 +29,14 @@ export const Form: FC<ChildProps> = (): ReactElement => {
     const newCard = {
       title: data.title,
       author: data.author,
-      date: data.date,
+      date: data.date.toString(),
       gender: data.gender,
       isAgree: data.isAgree,
       category: data.category,
       file: URL.createObjectURL(data.file[0]),
     };
-    setState({
-      ...state,
-      formItem: [...state.formItem, newCard],
-      created: true,
-    });
+    dispatch(addCardForm(newCard));
+    console.log(typeof newCard.date);
 
     reset();
     setTimeout(() => {
@@ -48,6 +47,8 @@ export const Form: FC<ChildProps> = (): ReactElement => {
       });
     }, 1000);
   };
+  const { addCardForm } = formSlicer.actions;
+  const dispatch = useAppDispatch();
 
   f = state.formItem;
   return (

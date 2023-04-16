@@ -6,9 +6,15 @@ type MyProps = {
   key?: string;
   index?: string;
 };
-/*type MyState = {
-  index?: number;
-};*/
+
+export type CardFormType = {
+  title: string;
+  author: string;
+  category: string;
+  date: string;
+  file: string;
+  gender: string;
+};
 
 const CardForm: FC<ChildProps> = (props: MyProps): ReactElement => {
   const state = {

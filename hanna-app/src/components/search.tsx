@@ -22,7 +22,6 @@ const SearchBar: FC<ChildProps> = ({ searchValue, setSearchValue }): ReactElemen
         value={searchValue}
         key="search-bar"
         placeholder={'enter word for search'}
-        
       />
     </form>
   );
