@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './form.css';
 import { CardType } from './function';
 import { CardListForm } from './cardListForm';
 import { useForm } from 'react-hook-form';
-import { formSlicer } from '../../store/reducers/cardFormSlicer';
-import { useAppDispatch } from '../../hooks/redux';
-
-export let f: Array<CardType> = [];
+import { cardFormSlicer } from '../../store/reducers/cardFormSlicer';
+import { formSlicer } from '../../store/reducers/formSlicer';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 export const Form: FC<ChildProps> = (): ReactElement => {
-  const [state, setState] = useState({
-    formItem: [],
-    created: false,
-  });
+  const state = useAppSelector((state) => state.cardFormReducer);
+  const formState = useAppSelector((state) => state.formReducer);
+  const { addCardForm, createNewCard } = cardFormSlicer.actions;
+  const { changeFormField } = formSlicer.actions;
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -25,32 +25,42 @@ export const Form: FC<ChildProps> = (): ReactElement => {
     shouldFocusError: false,
   });
 
+  const changeField = (data: EventTarget) => {
+    const value = data.value;
+    let obj = {};
+    switch (data.name) {
+      case 'title': {
+        obj = { title: value };
+        break;
+      }
+      case 'author': {
+        obj = { author: value };
+        break;
+      }
+      case 'date': {
+        obj = { date: value };
+        break;
+      }
+    }
+    dispatch(changeFormField(obj));
+  };
+
   const onSubmit = (data: CardType) => {
     const newCard = {
       title: data.title,
       author: data.author,
-      date: data.date.toString(),
+      date: data.date.toString().slice(4, 15),
       gender: data.gender,
       isAgree: data.isAgree,
       category: data.category,
       file: URL.createObjectURL(data.file[0]),
     };
-    dispatch(addCardForm(newCard));
-    console.log(typeof newCard.date);
-
+    dispatch(createNewCard(true));
     reset();
     setTimeout(() => {
-      setState({
-        ...state,
-        formItem: [...state.formItem, newCard],
-        created: false,
-      });
+      dispatch(addCardForm(newCard));
     }, 1000);
   };
-  const { addCardForm } = formSlicer.actions;
-  const dispatch = useAppDispatch();
-
-  f = state.formItem;
   return (
     <>
       <form className="formStyle" onSubmit={handleSubmit(onSubmit)}>
@@ -58,16 +68,22 @@ export const Form: FC<ChildProps> = (): ReactElement => {
           Enter title for your foto
           <input
             className="inputStyle"
-            defaultValue=""
+            defaultValue={formState.formFields.title}
             name="title"
             type="text"
-            {...register('title', {
-              required: true,
-              minLength: {
-                value: 3,
-                message: 'You need input more 3 letters',
+            {...register(
+              'title',
+              {
+                onChange: (e) => changeField(e.target),
               },
-            })}
+              {
+                required: true,
+                minLength: {
+                  value: 3,
+                  message: 'You need input more 3 letters',
+                },
+              }
+            )}
             placeholder="Title"
           />
           {errors.title && <p className="error">Error Title</p>}
@@ -77,16 +93,22 @@ export const Form: FC<ChildProps> = (): ReactElement => {
           Enter author&apos;s name for your foto
           <input
             className="inputStyle"
-            defaultValue=""
+            defaultValue={formState.formFields.author}
             name="author"
             type="text"
-            {...register('author', {
-              required: true,
-              minLength: {
-                value: 3,
-                message: 'You need input more 3 letters',
+            {...register(
+              'author',
+              {
+                onChange: (e) => changeField(e.target),
               },
-            })}
+              {
+                required: true,
+                minLength: {
+                  value: 3,
+                  message: 'You need input more 3 letters',
+                },
+              }
+            )}
             placeholder="Author"
           />
           {errors.author && <p className="error">Error Author</p>}
@@ -96,13 +118,19 @@ export const Form: FC<ChildProps> = (): ReactElement => {
           Enter date of create foto
           <input
             className="inputStyle"
-            defaultValue=""
+            defaultValue={formState.formFields.date}
             name="date"
             type="date"
-            {...register('date', {
-              required: true,
-              valueAsDate: true,
-            })}
+            {...register(
+              'date',
+              {
+                onChange: (e) => changeField(e.target),
+              },
+              {
+                required: true,
+                valueAsDate: true,
+              }
+            )}
           />
           {errors.date && <p className="error">Error Date</p>}
         </label>
@@ -112,10 +140,16 @@ export const Form: FC<ChildProps> = (): ReactElement => {
           <select
             className="inputStyle"
             name="category"
-            defaultValue=""
-            {...register('category', {
-              required: true,
-            })}
+            defaultValue={formState.formFields.category}
+            {...register(
+              'category',
+              {
+                onChange: (e) => changeField(e.target),
+              },
+              {
+                required: true,
+              }
+            )}
           >
             <option value="people">people</option>
             <option value="city">city</option>
@@ -129,9 +163,15 @@ export const Form: FC<ChildProps> = (): ReactElement => {
             className=""
             name="isAgree"
             type="checkbox"
-            {...register('isAgree', {
-              required: true,
-            })}
+            {...register(
+              'isAgree',
+              {
+                onChange: (e) => changeField(e.target),
+              },
+              {
+                required: true,
+              }
+            )}
           />
           {errors.isAgree && <p className="error">Check it!</p>}
         </label>
@@ -172,7 +212,7 @@ export const Form: FC<ChildProps> = (): ReactElement => {
         <input className="buttonStyle" type="submit" value="Submit" />
       </form>
       {state.created && <p className="createdMessage">Card is created</p>}
-      <CardListForm data={JSON.stringify(f)} />
+      <CardListForm data={JSON.stringify(state.formItem)} />
     </>
   );
 };

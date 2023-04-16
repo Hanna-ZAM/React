@@ -43,7 +43,7 @@ const CardForm: FC<ChildProps> = (props: MyProps): ReactElement => {
       <img className="card-image" src={state.file} alt="card-img"></img>
       <p className="card-text">Author: {state.author}</p>
       <p className="card-text">Category: {state.category}</p>
-      <p className="card-text">Create at: {state.date.slice(0, 10)}</p>
+      <p className="card-text">Create at: {state.date}</p>
     </div>
   );
 };

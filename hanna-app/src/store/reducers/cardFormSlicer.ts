@@ -2,23 +2,27 @@ import { CardFormType } from 'components/form/cardForm';
 import { createSlice } from '@reduxjs/toolkit';
 
 interface cardFormState {
-  cards: Array<CardFormType>;
-  isLoading: boolean;
+  formItem: Array<CardFormType>;
+  created: boolean;
   error: string;
 }
 
 const initialState: cardFormState = {
-  cards: [],
-  isLoading: false,
+  formItem: [],
+  created: false,
   error: '',
 };
-export const formSlicer = createSlice({
+export const cardFormSlicer = createSlice({
   name: 'form',
   initialState,
   reducers: {
     addCardForm(state, action: PayloadAction<CardFormType>) {
-      state.cards.push(action.payload);
+      state.formItem.push(action.payload);
+      state.created = false;
+    },
+    createNewCard(state, action: PayloadAction<boolean>) {
+      state.created = action.payload;
     },
   },
 });
-export default formSlicer.reducer;
+export default cardFormSlicer.reducer;
