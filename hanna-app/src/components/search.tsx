@@ -12,9 +12,6 @@ const SearchBar: FC<ChildProps> = ({ searchValue, setSearchValue }): ReactElemen
         margin: 'auto',
         display: 'flex',
       }}
-      onSubmit={(e: React.SyntheticEvent<EventTarget>) => {
-        setSearchValue((e.target as HTMLInputElement).value);
-      }}
     >
       <img src="./assets/img/search-svgrepo-com.svg" alt="search-img"></img>
       <input
@@ -22,6 +19,9 @@ const SearchBar: FC<ChildProps> = ({ searchValue, setSearchValue }): ReactElemen
         value={searchValue}
         key="search-bar"
         placeholder={'enter word for search'}
+        onChange={(e: React.SyntheticEvent<EventTarget>) => {
+          setSearchValue((e.target as HTMLInputElement).value);
+        }}
       />
     </form>
   );
