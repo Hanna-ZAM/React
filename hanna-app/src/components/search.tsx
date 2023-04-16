@@ -4,13 +4,16 @@ const BarStyle = { width: '20rem', background: '#F0F0F0', border: 'none', paddin
 
 const SearchBar: FC<ChildProps> = ({ searchValue, setSearchValue }): ReactElement => {
   return (
-    <div
+    <form
       style={{
         width: '22rem',
         background: '#F0F0F0',
         border: '1px',
         margin: 'auto',
         display: 'flex',
+      }}
+      onSubmit={(e: React.SyntheticEvent<EventTarget>) => {
+        setSearchValue((e.target as HTMLInputElement).value);
       }}
     >
       <img src="./assets/img/search-svgrepo-com.svg" alt="search-img"></img>
@@ -19,11 +22,9 @@ const SearchBar: FC<ChildProps> = ({ searchValue, setSearchValue }): ReactElemen
         value={searchValue}
         key="search-bar"
         placeholder={'enter word for search'}
-        onChange={(e: React.SyntheticEvent<EventTarget>) => {
-          setSearchValue((e.target as HTMLInputElement).value);
-        }}
+        
       />
-    </div>
+    </form>
   );
 };
 
