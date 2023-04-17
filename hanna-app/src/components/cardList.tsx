@@ -1,52 +1,45 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import Card from './card';
-
+import { useAppSelector, useAppDispatch } from '../hooks/redux';
 import './cardList.css';
+import { fetchCards, searchCards } from '../store/reducers/ActionCreator';
 import { ProductType } from '../product';
-import axios from 'axios';
 
-const CardList: FC<ChildProps> = ({ data }): ReactElement => {
-  const [cards, setCards] = useState('');
-  const [stat, setStat] = useState('');
-
-  const getCardArr = useCallback(async () => {
-    setStat('');
-    const metod = data.searchMetod
-      ? 'flickr.photos.search&text=' + data.text
-      : 'flickr.photos.getRecent';
-    const bases =
-      'https://www.flickr.com/services/rest/?api_key=fd018fb8b522dc83b621f765fd3951a3&method=' +
-      metod +
-      '&safe_search=1&privacy_filter=1&&format=json&nojsoncallback=1';
-    const resp = await axios.get(bases);
-    setStat(resp.status);
-    setCards(resp.data.photos.photo);
-  }, [data.text, data.searchMetod]);
+const CardList: FC<ChildProps> = (): ReactElement => {
+  const dispatch = useAppDispatch();
+  const { cards, isLoading, error } = useAppSelector((state) => state.cardsReducer);
+  const { search } = useAppSelector((state) => state.searchReducer);
 
   useEffect(() => {
-    getCardArr();
-  }, [data, getCardArr]);
+    if (!search) {
+      dispatch(fetchCards());
+    } else {
+      dispatch(searchCards());
+    }
+  }, [dispatch, search]);
 
   return (
     <div className="cardList">
-      {![...cards].length && stat && <p>CardList is Empty</p>}
-      {![...cards].length && !stat && <p className="preloader">Loading...</p>}
-      {[...cards].map((el: ProductType, index: number) => {
-        if (el.ispublic) {
-          return (
-            <Card
-              data={{
-                secret: cards[index].secret,
-                id: cards[index].id,
-                server: cards[index].server,
-                farm: cards[index].farm,
-              }}
-              key={cards[index].id as string}
-              index={index.toString()}
-            />
-          );
-        }
-      })}
+      {![...cards].length && !isLoading && <p>CardList is Empty</p>}
+      {isLoading && <p className="preloader">Loading...</p>}
+      {error && <p>{error}</p>}
+      {!isLoading &&
+        [...cards].map((el: ProductType, index: number) => {
+          if (el.ispublic) {
+            return (
+              <Card
+                data={{
+                  secret: cards[index].secret,
+                  id: cards[index].id,
+                  server: cards[index].server,
+                  farm: cards[index].farm,
+                }}
+                key={cards[index].id as string}
+                index={index.toString()}
+              />
+            );
+          }
+        })}
     </div>
   );
 };
