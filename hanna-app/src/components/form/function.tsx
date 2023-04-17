@@ -31,7 +31,7 @@ export function validation(card: CardType) {
     file: true,
   };
   if (!card.title || card.title.length < 3) {
-    /* console.log('wrong title');*/
+
     result.title = false;
   }
   if (
@@ -39,23 +39,23 @@ export function validation(card: CardType) {
     card.author.length < 3 ||
     card.author[0].toLocaleLowerCase() === card.author[0]
   ) {
-    /* console.log('wrong author');*/
+
     result.author = false;
   }
   if (!(card.date.split('-').length === 3) || new Date(Date.now()) < new Date(card.date)) {
-    /* console.log('wrong date');*/
+
     result.date = false;
   }
   if (!card.isAgree) {
-    /* console.log(card.isAgree);*/
+
     result.isAgree = false;
   }
   if (!card.genderCheck) {
-    /* console.log('wrong file');*/
+
     result.gender = false;
   }
   if (!card.file) {
-    /* console.log('wrong file');*/
+
     result.file = false;
   }
   return result;

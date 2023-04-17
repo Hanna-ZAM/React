@@ -3,13 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { useAppSelector } from '../../hooks/redux';
 
 export const fetchCards = createAsyncThunk('card/fetchAll', async (_, thunkAPI) => {
-  /*const {search} = useAppSelector(state=> state.searchReducer)
-   console.log(search)*/
   try {
-    const metod =
-      /*search
-            ? 'flickr.photos.search&text=' + search
-            : */ 'flickr.photos.getRecent';
+    const metod = 'flickr.photos.getRecent';
     const bases =
       'https://www.flickr.com/services/rest/?api_key=fd018fb8b522dc83b621f765fd3951a3&method=' +
       metod +
