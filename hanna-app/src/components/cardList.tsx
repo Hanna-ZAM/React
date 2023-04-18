@@ -1,31 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Card from './card';
-import { useAppSelector, useAppDispatch } from '../hooks/redux';
+import { useAppSelector } from '../hooks/redux';
 import './cardList.css';
-import { fetchCards, searchCards } from '../store/reducers/ActionCreator';
+
 import { ProductType } from '../product';
+import { cardAPI } from '../store/services/serviseCards';
 
 const CardList: FC<ChildProps> = (): ReactElement => {
-  const dispatch = useAppDispatch();
-  const { cards, isLoading, error } = useAppSelector((state) => state.cardsReducer);
   const { search } = useAppSelector((state) => state.searchReducer);
-
-  useEffect(() => {
-    if (!search) {
-      dispatch(fetchCards());
-    } else {
-      dispatch(searchCards());
-    }
-  }, [dispatch, search]);
+  const m = search ? `flickr.photos.search&text=${search}` : undefined;
+  const { data, isLoading, error } = cardAPI.useFetchAllcardsQuery(m);
 
   return (
     <div className="cardList">
-      {![...cards].length && !isLoading && <p>CardList is Empty</p>}
+      {!isLoading && ![...data.photos.photo].length && !error && <p>CardList is Empty</p>}
       {isLoading && <p className="preloader">Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p>{error.error}</p>}
       {!isLoading &&
-        [...cards].map((el: ProductType, index: number) => {
+        [...data.photos.photo].map((el: ProductType, index: number) => {
           if (el.ispublic) {
+            const cards = data.photos.photo;
             return (
               <Card
                 data={{

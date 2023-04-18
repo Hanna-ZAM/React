@@ -31,7 +31,6 @@ export function validation(card: CardType) {
     file: true,
   };
   if (!card.title || card.title.length < 3) {
-
     result.title = false;
   }
   if (
@@ -39,23 +38,18 @@ export function validation(card: CardType) {
     card.author.length < 3 ||
     card.author[0].toLocaleLowerCase() === card.author[0]
   ) {
-
     result.author = false;
   }
   if (!(card.date.split('-').length === 3) || new Date(Date.now()) < new Date(card.date)) {
-
     result.date = false;
   }
   if (!card.isAgree) {
-
     result.isAgree = false;
   }
   if (!card.genderCheck) {
-
     result.gender = false;
   }
   if (!card.file) {
-
     result.file = false;
   }
   return result;
