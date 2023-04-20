@@ -43,6 +43,7 @@ const Card: FC<ChildProps> = (props: MyProps): ReactElement => {
             title: data.photo.title ? data.photo.title._content : 'no title',
             author: data.photo.owner.realname
               ? data.photo.owner.realname
+              
               : data.photo.owner.username,
             image: result,
             views: data.photo.views,
