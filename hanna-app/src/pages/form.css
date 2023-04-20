@@ -1,0 +1,33 @@
+* {
+margin-block-end: 0;
+margin-block-start: 0;
+}
+
+.formStyle{
+
+  width:50%;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: auto;
+  margin-top: 50px;
+}
+.labelStyle{
+  width: 55%;
+  margin: auto;
+}
+.inputStyle{
+  width:100%;
+  margin: auto;
+}
+.buttonStyle{
+  width:55%;
+  height: 50px;
+  margin: auto;
+  color: white;
+  background-color:rgba(14, 103, 103, 1);
+  font-size: large;
+}
